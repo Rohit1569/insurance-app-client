@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debounced Search Bar</title>
+  <style>
+    #search-results {
+      display: none;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <input type="text" id="searchInput" placeholder="Search...">
+  <div id="search-results"></div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('search-results');
+
+    // Mock data for demonstration purposes
+    const data = [
+      'Apple',
+      'Banana',
+      'Cherry',
+      'Date',
+      'Grape',
+      'Lemon',
+      'Orange',
+      'Peach',
+      'Pear',
+      'Strawberry'
+    ];
+
+    let debounceTimeout;
+
+    // Event listener for input changes
+    searchInput.addEventListener('input', function () {
+      const query = searchInput.value.trim();
+      
+      // Log the input changes
+      console.log('Input changed:', query);
+
+      // Clear the previous timeout
+      clearTimeout(debounceTimeout);
+
+      // Set a new timeout
+      debounceTimeout = setTimeout(() => {
+        search(query);
+      }, 300);
+    });
+
+    // Function to perform search
+    function search(query) {
+      // Log that the search is being performed
+      console.log('Searching for:', query);
+
+      // Mock search logic
+      const results = data.filter(item => item.toLowerCase().includes(query.toLowerCase()));
+
+      // Update the UI with search results
+      updateResultsUI(results);
+    }
+
+    // Function to update the UI with search results
+    function updateResultsUI(results) {
+      searchResults.innerHTML = '';
+
+      if (results.length > 0) {
+        results.forEach(result => {
+          const resultItem = document.createElement('div');
+          resultItem.textContent = result;
+          searchResults.appendChild(resultItem);
+        });
+
+        searchResults.style.display = 'block';
+      } else {
+        searchResults.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
